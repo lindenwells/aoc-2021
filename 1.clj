@@ -1,11 +1,5 @@
 (ns one_a
-  (:require [clojure.java.io :refer [reader]]
-            [clojure.edn :refer [read-string]]))
-
-(comment (with-open [rdr (reader "/home/linden/Downloads/1a_input")]
-           (doseq [line (line-seq rdr)]
-             (println line))))
-
+  (:require [clojure.edn :refer [read-string]]))
 
 (defn get-data [path]
   (read-string (str "[" (slurp path) "]")))
@@ -16,8 +10,14 @@
        (filter (fn [[a b]] (< a b)))
        count))
 
-(let [data (get-data "/home/linden/Downloads/1a_input")]
-  (count-increasing data))
+(def solve-1 count-increasing)
 
-(->> (read-string "42069")
-     type)
+(defn solve-2 [data]
+  (->> data
+       (partition 3 1)
+       (map (partial apply +))
+       count-increasing))
+
+(let [data (get-data "/home/linden/Downloads/1a_input")]
+  [(solve-1 data)
+   (solve-2 data)])
